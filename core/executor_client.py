@@ -32,9 +32,10 @@ class ExecutorClient:
             return f"Error occurred during development process: {str(e)}"
 
 if __name__ == "__main__":
-    # Example usage
-    client = ExecutorClient()
-    requirements = input("Enter your development requirements: ")
-    result = client.run_development_process(requirements)
-    print("Development process completed with result:")
-    print(result)
+    # Example usage - only run when called directly with --cli flag
+    if len(sys.argv) > 1 and sys.argv[1] == "--cli":
+        client = ExecutorClient()
+        requirements = input("Enter your development requirements: ")
+        result = client.run_development_process(requirements)
+        print("Development process completed with result:")
+        print(result)

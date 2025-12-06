@@ -5,8 +5,9 @@ Simple API for Render deployment that streams updates to Vercel app
 import os
 import sys
 import json
-import subprocess
-from flask import Flask, request, Response, stream_with_context
+import threading
+from flask import Flask, request, Response
+from core.executor_client import ExecutorClient
 
 app = Flask(__name__)
 
@@ -29,38 +30,33 @@ def generate_code():
         if not requirements:
             return {'error': 'No requirements provided'}, 400
         
-        # Create a subprocess to run the main application
-        def generate_stream():
-            # Send initial message
-            yield f"data: {json.dumps({'status': 'started', 'message': 'Starting code generation...', 'progress': 0})}\n\n"
-            
+        # Create a generator function for streaming
+        def generate():
             try:
-                # Run the main application as a subprocess
-                process = subprocess.Popen(
-                    [sys.executable, 'main.py'],
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    universal_newlines=True,
-                    bufsize=1
-                )
+                # Initialize executor client
+                client = ExecutorClient()
                 
-                # Send requirements to the subprocess
-                input_data = requirements + '\n\n' + str(max_iterations) + '\n'
-                output, _ = process.communicate(input=input_data)
+                # Run the development process
+                result = client.run_development_process(requirements, max_iterations)
                 
-                # Process the output line by line
-                for line in output.split('\n'):
-                    if line.startswith('data: '):
-                        yield line + '\n\n'
-                    elif line.strip():
-                        # For non-data lines, wrap them in our format
-                        yield f"data: {json.dumps({'status': 'info', 'message': line, 'progress': 50})}\n\n"
-                        
+                # Send final result
+                final_update = {
+                    "status": "completed",
+                    "message": "Process completed successfully",
+                    "progress": 100,
+                    "result": result
+                }
+                yield f"data: {json.dumps(final_update)}\n\n"
+                
             except Exception as e:
-                yield f"data: {json.dumps({'status': 'error', 'message': f'Process error: {str(e)}', 'progress': 0})}\n\n"
+                error_update = {
+                    "status": "error",
+                    "message": f"Process error: {str(e)}",
+                    "progress": 0
+                }
+                yield f"data: {json.dumps(error_update)}\n\n"
         
-        return Response(stream_with_context(generate_stream()), mimetype='text/event-stream')
+        return Response(generate(), mimetype='text/event-stream')
         
     except Exception as e:
         return {'error': str(e)}, 500

@@ -7,6 +7,18 @@ def main():
     """
     Main entry point for the Crew AI Developer and Debugger system
     """
+    # Check if running in command line mode
+    if len(sys.argv) > 1 and sys.argv[1] == "--cli":
+        run_cli_mode()
+    else:
+        # When imported or run without --cli, don't do anything
+        # This allows the API to work without terminal interaction
+        pass
+
+def run_cli_mode():
+    """
+    Run in command line interface mode
+    """
     print("Welcome to the Crew AI Developer and Debugger System")
     print("=" * 50)
     
