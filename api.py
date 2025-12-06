@@ -6,10 +6,20 @@ import os
 import sys
 import json
 import threading
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 from core.executor_client import ExecutorClient
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return jsonify({
+        "message": "AI Developer & Debugger System API",
+        "endpoints": {
+            "health": "GET /health",
+            "generate": "POST /generate"
+        }
+    })
 
 @app.route('/health')
 def health():
