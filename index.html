@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Authentic Indian cuisine at Rehaan Ka Dhaba - Experience traditional flavors since 1995">
+    <title>Rehaan Ka Dhaba | Authentic Indian Cuisine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e67e22;
+            --secondary: #d35400;
+            --accent: #f39c12;
+            --light: #fef9e7;
+            --dark: #1a1a1a;
+            --text: #333;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        header.sticky {
+            background: rgba(26, 26, 26, 0.98);
+            padding: 0.8rem 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            color: var(--light);
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            letter-spacing: 1px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: #eee;
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.6);
+        }
+
+        /* About Section */
+        .section {
+            padding: 7rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+        }
+
+        .about-image:hover {
+            transform: scale(1.03);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Menu Section */
+        .menu {
+            background: linear-gradient(to bottom, var(--light), #fdebd0);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-img {
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .menu-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .menu-item:hover .menu-img img {
+            transform: scale(1.1);
+        }
+
+        .menu-content {
+            padding: 1.8rem;
+        }
+
+        .menu-content h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .menu-content p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price span {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .order-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .order-btn:hover {
+            background: var(--secondary);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            position: relative;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .testimonials:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 26, 0.85);
+        }
+
+        .testimonial-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .testimonial p {
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .customer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .customer img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .customer-info h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .customer-info p {
+            font-style: normal;
+            color: #777;
+            margin: 0;
+        }
+
+        /* Contact Section */
+        .contact {
+            display: flex;
+            gap: 4rem;
+        }
+
+        .contact-info, .contact-form {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .contact-icon {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .contact-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-text p, .contact-text a {
+            color: #555;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-text a:hover {
+            color: var(--primary);
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .submit-btn {
+            align-self: flex-start;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: #eee;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #333;
+            color: white;
+        }
+
+        .newsletter-form input::placeholder {
+            color: #bbb;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            font-size: 1.1rem;
+        }
+
+        .copyright a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .contact {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background: var(--dark);
+                width: 100%;
+                text-align: center;
+                padding: 2rem 0;
+                gap: 2rem;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .price {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar" aria-label="Main Navigation">
+            <a href="#" class="logo">Rehaan<span>KaDhaba</span></a>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="#home" role="menuitem">Home</a></li>
+                <li role="none"><a href="#about" role="menuitem">About</a></li>
+                <li role="none"><a href="#menu" role="menuitem">Menu</a></li>
+                <li role="none"><a href="#testimonials" role="menuitem">Testimonials</a></li>
+                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
+            </ul>
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" aria-label="Hero Section">
+        <div class="hero-content">
+            <h1>Authentic Flavors of <span>India</span></h1>
+            <p>Experience the rich culinary heritage of India at Rehaan Ka Dhaba, where every dish tells a story of tradition and passion</p>
+            <a href="#menu" class="cta-button">Explore Our Menu</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about" aria-label="About Us">
+        <h2 class="section-title">Our Story</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Tradition Since 1995</h3>
+                <p>Founded by Rehaan Singh in a small roadside setup, our dhaba has grown into a beloved culinary landmark. For over 25 years, we've been serving authentic Indian cuisine cooked with traditional methods and fresh local ingredients.</p>
+                <p>Our recipes have been passed down through generations, preserving the authentic flavors of North India. Each dish is prepared with the same love and care that made our dhaba famous among travelers and food enthusiasts alike.</p>
+                <p>At Rehaan Ka Dhaba, we believe in the power of food to bring people together. Our warm hospitality and rustic ambiance create an unforgettable dining experience that keeps our customers coming back.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Traditional Indian cooking at Rehaan Ka Dhaba" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="section menu" id="menu" aria-label="Our Menu">
+        <h2 class="section-title">Specialties</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-img">
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Butter Chicken" loading="lazy">
+                </div>
+                <div class="menu-content">
+                    <h3>Butter Chicken</h3>
+                    <p>Tender chicken in a rich tomato and butter sauce with aromatic spices</p>
+                    <div class="price">
+                        <span>₹320</span>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-img">
+                    <img src="https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tandoori Roti" loading="lazy">
+                </div>
+                <div class="menu-content">
+                    <h3>Tandoori Roti</h3>
+                    <p>Traditional Indian bread baked in clay oven, served with ghee</p>
+                    <div class="price">
+                        <span>₹25</span>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-img">
+                    <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dal Makhani" loading="lazy">
+                </div>
+                <div class="menu-content">
+                    <h3>Dal Makhani</h3>
+                    <p>Creamy black lentils slow-cooked with butter and spices</p>
+                    <div class="price">
+                        <span>₹220</span>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-img">
+                    <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Paneer Tikka" loading="lazy">
+                </div>
+                <div class="menu-content">
+                    <h3>Paneer Tikka</h3>
+                    <p>Cottage cheese marinated in spices and grilled to perfection</p>
+                    <div class="price">
+                        <span>₹280</span>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials" aria-label="Customer Testimonials">
+        <div class="testimonial-container">
+            <h2 class="section-title" style="color: white;">Customer Stories</h2>
+            <div class="testimonial">
+                <p>"The best dhaba experience I've ever had! The butter chicken was out of this world, and the hospitality made us feel like family. Will definitely return whenever I'm in town."</p>
+                <div class="customer">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rajesh Kumar" loading="lazy">
+                    <div class="customer-info">
+                        <h4>Rajesh Kumar</h4>
+                        <p>Regular Customer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p>"Authentic flavors that reminded me of my grandmother's cooking. The dal makhani and tandoori roti combination is heavenly. A must-visit for anyone craving real North Indian food."</p>
+                <div class="customer">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Sharma" loading="lazy">
+                    <div class="customer-info">
+                        <h4>Priya Sharma</h4>
+                        <p>Food Blogger</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact" aria-label="Contact Us">
+        <h2 class="section-title">Find Us</h2>
+        <div class="contact">
+            <div class="contact-info">
+                <h3>Visit Our Dhaba</h3>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Location</h4>
+                        <p>Grand Trunk Road, NH-44, Ambala, Haryana 134003</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Opening Hours</h4>
+                        <p>Monday-Sunday: 7:00 AM - 11:00 PM</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Call Us</h4>
+                        <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Email</h4>
+                        <p><a href="mailto:info@rehaankadhaba.com">info@rehaankadhaba.com</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send Message</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Your Name" required>
+                        <div class="error-message" id="nameError">Please enter your name</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Your Email" required>
+                        <div class="error-message" id="emailError">Please enter a valid email</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" placeholder="Your Phone">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" placeholder="Your Message" required></textarea>
+                        <div class="error-message" id="messageError">Please enter your message</div>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Rehaan Ka Dhaba</h3>
+                <p>Preserving authentic Indian flavors since 1995. Experience the true taste of North India with our traditional recipes and warm hospitality.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#menu">Our Menu</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Popular Dishes</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Butter Chicken</a></li>
+                    <li><a href="#">Dal Makhani</a></li>
+                    <li><a href="#">Paneer Tikka</a></li>
+                    <li><a href="#">Tandoori Roti</a></li>
+                    <li><a href="#">Lassi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe for special offers and updates</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" id="newsletterEmail" placeholder="Your Email" required>
+                    <button type="submit" class="submit-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Rehaan Ka Dhaba. All Rights Reserved | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i></p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>

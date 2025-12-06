@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ai-developer-debugger
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python api.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.15
+      - key: SAMBANOVA_API_KEY
+        sync: false
