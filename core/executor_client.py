@@ -17,9 +17,12 @@ class ExecutorClient:
         try:
             # Create and run the development crew
             crew = DevelopmentCrew(self.api_key, max_iterations)
-            result = crew.run_crew(requirements)
+            updates = crew.run_crew(requirements)
             
-            return result
+            # Yield each update
+            for update in updates:
+                yield update
+                
         except Exception as e:
             # Send error update
             error_update = {
@@ -27,15 +30,33 @@ class ExecutorClient:
                 "message": f"Error occurred during development process: {str(e)}",
                 "progress": 0
             }
-            print(f"data: {json.dumps(error_update)}")
-            sys.stdout.flush()
-            return f"Error occurred during development process: {str(e)}"
+            yield f"data: {json.dumps(error_update)}\n\n"
 
-if __name__ == "__main__":
+# For direct CLI usage
+def main():
     # Example usage - only run when called directly with --cli flag
     if len(sys.argv) > 1 and sys.argv[1] == "--cli":
         client = ExecutorClient()
         requirements = input("Enter your development requirements: ")
-        result = client.run_development_process(requirements)
-        print("Development process completed with result:")
-        print(result)
+        
+        # For CLI, collect all updates and print the final result
+        final_result = ""
+        for update in client.run_development_process(requirements):
+            print(update, end='')
+            sys.stdout.flush()
+            
+            # Try to extract result from completed update
+            if "data:" in update:
+                try:
+                    json_str = update.split("data:")[1].strip()
+                    data = json.loads(json_str)
+                    if data.get("status") == "completed" and "result" in data:
+                        final_result = data["result"]
+                except:
+                    pass
+        
+        print("\nDevelopment process completed with result:")
+        print(final_result)
+
+if __name__ == "__main__":
+    main()

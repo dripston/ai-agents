@@ -55,18 +55,22 @@ class DevelopmentCrew:
             expected_output="Final code ready for deployment."
         )
 
-    def send_update(self, status, message, progress, result=None):
-        """Send update as JSON to stdout for streaming"""
+    def generate_updates(self, status, message, progress, result=None):
+        """Generate update as JSON"""
         update = {
             "status": status,
             "message": message,
             "progress": progress
         }
         if result:
-            update["result"] = result
+            # Convert result to string if it's not already serializable
+            try:
+                json.dumps(result)
+                update["result"] = result
+            except TypeError:
+                update["result"] = str(result)
             
-        print(f"data: {json.dumps(update)}")
-        sys.stdout.flush()
+        return f"data: {json.dumps(update)}\n\n"
 
     def run_crew(self, requirements):
         code_context = requirements
@@ -75,13 +79,13 @@ class DevelopmentCrew:
         debug_result = None
 
         # Send initial update
-        self.send_update("started", "Starting development process...", 0)
+        yield self.generate_updates("started", "Starting development process...", 0)
 
         for i in range(self.max_iterations):
-            self.send_update("processing", f"Starting iteration {i+1} of {self.max_iterations}", 10 + (i * 20))
+            yield self.generate_updates("processing", f"Starting iteration {i+1} of {self.max_iterations}", 10 + (i * 20))
             
             # Developer writes or fixes code
-            self.send_update("processing", f"Developer agent generating code (iteration {i+1})", 15 + (i * 20))
+            yield self.generate_updates("processing", f"Developer agent generating code (iteration {i+1})", 15 + (i * 20))
             dev_task = self.create_development_task(code_context)
             dev_crew = Crew(
                 agents=[self.developer_agent],
@@ -90,11 +94,12 @@ class DevelopmentCrew:
             )
             dev_result = dev_crew.kickoff()
 
-            last_code = dev_result
-            self.send_update("processing", f"Developer completed code generation (iteration {i+1})", 20 + (i * 20))
+            # Convert CrewOutput to string
+            last_code = str(dev_result)
+            yield self.generate_updates("processing", f"Developer completed code generation (iteration {i+1})", 20 + (i * 20))
 
             # Debugger reviews the actual code
-            self.send_update("processing", f"Debugger agent reviewing code (iteration {i+1})", 25 + (i * 20))
+            yield self.generate_updates("processing", f"Debugger agent reviewing code (iteration {i+1})", 25 + (i * 20))
             debug_task = self.create_debugging_task(last_code)
             debug_crew = Crew(
                 agents=[self.debugger_agent],
@@ -103,14 +108,14 @@ class DevelopmentCrew:
             )
             debug_result = debug_crew.kickoff()
             
-            self.send_update("processing", f"Debugger completed review (iteration {i+1})", 30 + (i * 20))
+            yield self.generate_updates("processing", f"Debugger completed review (iteration {i+1})", 30 + (i * 20))
 
             # Check for approval codes
             if "-11" in str(debug_result):
                 approved = True
-                self.send_update("processing", f"Code approved by debugger (iteration {i+1})", 35 + (i * 20))
+                yield self.generate_updates("processing", f"Code approved by debugger (iteration {i+1})", 35 + (i * 20))
                 # Only deploy approved code
-                self.send_update("processing", "Deploying approved code", 80)
+                yield self.generate_updates("processing", "Deploying approved code", 80)
                 deploy_task = self.create_deployment_task(last_code)
                 deploy_crew = Crew(
                     agents=[self.debugger_agent],
@@ -119,11 +124,11 @@ class DevelopmentCrew:
                 )
                 deploy_result = deploy_crew.kickoff()
 
-                self.send_update("completed", "Process completed successfully", 100, {
+                yield self.generate_updates("completed", "Process completed successfully", 100, {
                     "code": last_code,
-                    "deployment": deploy_result
+                    "deployment": str(deploy_result)
                 })
-                return f"Code has been approved and is ready for deployment:\n\n{last_code}\n\nDeployment result:\n\n{deploy_result}"
+                return
             elif "-00" in str(debug_result):
                 # Feed feedback back to developer (not debugger)
                 code_context = f"""
@@ -138,10 +143,10 @@ Debugger feedback:
 
 Please fix the code based on the feedback above.
 """
-                self.send_update("processing", f"Code not approved, sending back to developer (iteration {i+1})", 35 + (i * 20))
+                yield self.generate_updates("processing", f"Code not approved, sending back to developer (iteration {i+1})", 35 + (i * 20))
             else:
                 # Handle case where neither code is found (fallback)
-                self.send_update("warning", f"Neither approval nor rejection code found, treating as rejection (iteration {i+1})", 35 + (i * 20))
+                yield self.generate_updates("warning", f"Neither approval nor rejection code found, treating as rejection (iteration {i+1})", 35 + (i * 20))
                 code_context = f"""
 Original requirements:
 {requirements}
@@ -156,9 +161,8 @@ Please fix the code based on the feedback above.
 """
 
         # If we reach here, max iterations were reached without approval
-        self.send_update("completed", "Max iterations reached without approval", 100, {
+        yield self.generate_updates("completed", "Max iterations reached without approval", 100, {
             "code": last_code,
-            "feedback": debug_result,
+            "feedback": str(debug_result),
             "status": "max_iterations_reached"
         })
-        return f"Maximum iterations reached without approval from debugger. Last code generated:\n\n{last_code}\n\nFinal debugger feedback:\n\n{debug_result}"

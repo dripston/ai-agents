@@ -5,21 +5,20 @@ Simple API for Render deployment that streams updates to Vercel app
 import os
 import sys
 import json
-import threading
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response
 from core.executor_client import ExecutorClient
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return jsonify({
+    return {
         "message": "AI Developer & Debugger System API",
         "endpoints": {
             "health": "GET /health",
             "generate": "POST /generate"
         }
-    })
+    }
 
 @app.route('/health')
 def health():
@@ -46,18 +45,10 @@ def generate_code():
                 # Initialize executor client
                 client = ExecutorClient()
                 
-                # Run the development process
-                result = client.run_development_process(requirements, max_iterations)
-                
-                # Send final result
-                final_update = {
-                    "status": "completed",
-                    "message": "Process completed successfully",
-                    "progress": 100,
-                    "result": result
-                }
-                yield f"data: {json.dumps(final_update)}\n\n"
-                
+                # Run the development process and stream updates
+                for update in client.run_development_process(requirements, max_iterations):
+                    yield update
+                    
             except Exception as e:
                 error_update = {
                     "status": "error",
