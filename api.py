@@ -6,9 +6,11 @@ import os
 import sys
 import json
 from flask import Flask, request, Response
+from flask_cors import CORS
 from core.executor_client import ExecutorClient
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route('/')
 def home():
