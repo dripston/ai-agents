@@ -1,5 +1,5 @@
 crewai==1.7.0
 langchain-sambanova==0.2.0
-python-dotenv==1.0.1
+python-dotenv
 flask==3.1.0
 flask-cors==5.0.0
